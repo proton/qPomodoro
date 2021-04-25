@@ -49,7 +49,6 @@ void MainWindow::timerTick() {
 
 void MainWindow::startTimer(int munutes, QString& finish_text) {
     this->time_left = munutes * 60;
-    this->timer_is_active = true;
     this->timer_message = finish_text;
     this->actualizeTimeText();
 

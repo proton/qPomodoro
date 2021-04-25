@@ -30,7 +30,6 @@ private:
     Ui::MainWindow *ui;
     QSystemTrayIcon *trayIcon;
     int time_left = 0;
-    bool timer_is_active;
     QString timer_message;
     QTimer* timer;
 
