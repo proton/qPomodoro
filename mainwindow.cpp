@@ -48,6 +48,7 @@ void MainWindow::timerTick() {
         this->trayIcon->showMessage(this->timer_message, this->timer_message);
         this->timer->stop();
         this->trayIcon->setIcon(QIcon(":/icons/default.png"));
+        this->setWindowIcon(QIcon(":/icons/default.png"));
     }
 }
 
@@ -55,6 +56,7 @@ void MainWindow::startTimer(int munutes, QString& finish_text, QIcon& icon) {
     this->time_left = munutes * 60;
     this->timer_message = finish_text;
     this->trayIcon->setIcon(icon);
+    this->setWindowIcon(icon);
     this->actualizeTimeText();
 
     this->timer->start(1000);
