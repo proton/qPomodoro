@@ -33,7 +33,7 @@ private:
     QString timer_message;
     QTimer* timer;
 
-    void startTimer(int minutes, QString& finish_text);
+    void startTimer(int minutes, QString& finish_text, QIcon& icon);
     void actualizeTimeText();
 };
 #endif // MAINWINDOW_H
