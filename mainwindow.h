@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include <QAction>
+#include <QMenu>
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE
@@ -24,15 +26,21 @@ private slots:
 
     void on_pomodoroStartButton_clicked();
 
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+
     void timerTick();
 
 private:
     Ui::MainWindow *ui;
-    QSystemTrayIcon *trayIcon;
-    QMenu *trayIconMenu;
     int time_left = 0;
     QString timer_message;
     QTimer* timer;
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
+    QAction *quitAction;
+
+    void setupTrayIcon();
 
     void startTimer(int minutes, QString& finish_text, QIcon& icon);
     void actualizeTimeText();

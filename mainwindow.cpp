@@ -7,11 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(QIcon(":/icons/default.png"));
-    trayIcon->show();
-    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::show);
-    connect(trayIcon, &QSystemTrayIcon::messageClicked, this, &MainWindow::show);
+    setupTrayIcon();
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::timerTick);
@@ -50,6 +46,34 @@ void MainWindow::timerTick() {
         timer->stop();
         trayIcon->setIcon(QIcon(":/icons/default.png"));
         setWindowIcon(QIcon(":/icons/default.png"));
+    }
+}
+
+void MainWindow::setupTrayIcon() {
+    quitAction = new QAction(tr("&Quit"), this);
+    connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon(QIcon(":/icons/default.png"));
+    trayIcon->show();
+
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+    connect(trayIcon, &QSystemTrayIcon::messageClicked, this, &MainWindow::show);
+}
+
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+        show();
+        break;
+    default:
+        trayIcon->showMessage("bla", "some");
+        trayIconMenu->popup(trayIcon->geometry().center());
     }
 }
 
