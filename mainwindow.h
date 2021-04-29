@@ -39,6 +39,9 @@ private:
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
     QAction *quitAction;
+    QAction *shortBreakAction;
+    QAction *longBreakAction;
+    QAction *pomodoroAction;
 
     void setupTrayIcon();
 

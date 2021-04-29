@@ -50,10 +50,20 @@ void MainWindow::timerTick() {
 }
 
 void MainWindow::setupTrayIcon() {
+    pomodoroAction = new QAction(tr("Pomodoro"), this);
+    connect(pomodoroAction, &QAction::triggered, this, &MainWindow::on_pomodoroStartButton_clicked);
+    shortBreakAction = new QAction(tr("Short Break"), this);
+    connect(shortBreakAction, &QAction::triggered, this, &MainWindow::on_shortBreakStartButton_clicked);
+    longBreakAction = new QAction(tr("Long Break"), this);
+    connect(longBreakAction, &QAction::triggered, this, &MainWindow::on_longBreakStartButton_clicked);
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
     trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(pomodoroAction);
+    trayIconMenu->addAction(shortBreakAction);
+    trayIconMenu->addAction(longBreakAction);
+    trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
 
     trayIcon = new QSystemTrayIcon(this);
