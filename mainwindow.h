@@ -29,6 +29,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
     int time_left = 0;
     QString timer_message;
     QTimer* timer;

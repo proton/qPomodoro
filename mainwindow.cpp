@@ -7,13 +7,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->trayIcon = new QSystemTrayIcon(this);
-    this->trayIcon->setIcon(QIcon(":/icons/default.png"));
-    this->trayIcon->show();
-    connect(this->trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::show);
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":/icons/default.png"));
+    trayIcon->show();
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::show);
+    connect(trayIcon, &QSystemTrayIcon::messageClicked, this, &MainWindow::show);
 
-    this->timer = new QTimer(this);
-    connect(this->timer, &QTimer::timeout, this, &MainWindow::timerTick);
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::timerTick);
 }
 
 MainWindow::~MainWindow() {
@@ -24,50 +25,50 @@ MainWindow::~MainWindow() {
 void MainWindow::on_shortBreakStartButton_clicked() {
     QString text = "finish";
     QIcon icon = QIcon(":/icons/green.png");
-    this->startTimer(5, text, icon);
+    startTimer(5, text, icon);
 }
 
 void MainWindow::on_longBreakStartButton_clicked() {
     QString text = "finish";
     QIcon icon = QIcon(":/icons/green.png");
-    this->startTimer(10, text, icon);
+    startTimer(10, text, icon);
 }
 
 void MainWindow::on_pomodoroStartButton_clicked() {
     QString text = "finish";
     QIcon icon = QIcon(":/icons/red.png");
-    this->startTimer(25, text, icon);
+    startTimer(25, text, icon);
 }
 
 void MainWindow::timerTick() {
-    --this->time_left;
+    --time_left;
 
-    this->actualizeTimeText();
+    actualizeTimeText();
 
-    if (this->time_left == 0) {
-        this->trayIcon->showMessage(this->timer_message, this->timer_message);
-        this->timer->stop();
-        this->trayIcon->setIcon(QIcon(":/icons/default.png"));
-        this->setWindowIcon(QIcon(":/icons/default.png"));
+    if (time_left == 0) {
+        trayIcon->showMessage(timer_message, timer_message);
+        timer->stop();
+        trayIcon->setIcon(QIcon(":/icons/default.png"));
+        setWindowIcon(QIcon(":/icons/default.png"));
     }
 }
 
 void MainWindow::startTimer(int munutes, QString& finish_text, QIcon& icon) {
-    this->time_left = munutes * 60;
-    this->timer_message = finish_text;
-    this->trayIcon->setIcon(icon);
-    this->setWindowIcon(icon);
-    this->actualizeTimeText();
+    time_left = munutes * 60;
+    timer_message = finish_text;
+    trayIcon->setIcon(icon);
+    setWindowIcon(icon);
+    actualizeTimeText();
 
-    this->timer->start(1000);
+    timer->start(1000);
 }
 
 void MainWindow::actualizeTimeText() {
-    int minutes = this->time_left / 60;
-    int seconds = this->time_left % 60;
+    int minutes = time_left / 60;
+    int seconds = time_left % 60;
 
-    QLabel* label = this->findChild<QLabel*>("timeLabel");
+    QLabel* label = findChild<QLabel*>("timeLabel");
     auto text = QString("%1:%2").arg(minutes, 2, 10, QLatin1Char('0')).arg(seconds, 2, 10, QLatin1Char('0'));
     label->setText(text);
-    this->trayIcon->setToolTip(text);
+    trayIcon->setToolTip(text);
 }
