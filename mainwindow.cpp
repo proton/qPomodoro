@@ -36,6 +36,10 @@ void MainWindow::on_pomodoroStartButton_clicked() {
     startTimer(25, text, icon);
 }
 
+void MainWindow::on_toggle() {
+    setVisible(!isVisible());
+}
+
 void MainWindow::timerTick() {
     --time_left;
 
@@ -50,6 +54,8 @@ void MainWindow::timerTick() {
 }
 
 void MainWindow::setupTrayIcon() {
+    toggleAction = new QAction(tr("Toggle"), this);
+    connect(toggleAction, &QAction::triggered, this, &MainWindow::on_toggle);
     pomodoroAction = new QAction(tr("Pomodoro"), this);
     connect(pomodoroAction, &QAction::triggered, this, &MainWindow::on_pomodoroStartButton_clicked);
     shortBreakAction = new QAction(tr("Short Break"), this);
@@ -60,6 +66,8 @@ void MainWindow::setupTrayIcon() {
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
     trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(toggleAction);
+    trayIconMenu->addSeparator();
     trayIconMenu->addAction(pomodoroAction);
     trayIconMenu->addAction(shortBreakAction);
     trayIconMenu->addAction(longBreakAction);
@@ -79,7 +87,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
     case QSystemTrayIcon::Trigger:
-        show();
+        on_toggle();
         break;
     default:
         trayIcon->showMessage("bla", "some");

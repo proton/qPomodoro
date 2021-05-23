@@ -21,13 +21,10 @@ public:
 
 private slots:
     void on_shortBreakStartButton_clicked();
-
     void on_longBreakStartButton_clicked();
-
     void on_pomodoroStartButton_clicked();
-
+    void on_toggle();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
-
     void timerTick();
 
 private:
@@ -38,6 +35,7 @@ private:
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+    QAction *toggleAction;
     QAction *quitAction;
     QAction *shortBreakAction;
     QAction *longBreakAction;
